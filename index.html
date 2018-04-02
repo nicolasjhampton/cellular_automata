@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Automata Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+    <p>this is my test html</p>
+    <div id="screen"></div>
+    <div id="animation_controls">
+        <button id="animate">Animate</button>
+    </div>
+    <div id="automata_controls">
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel on"></div>
+                <div class="pixel on"></div>
+                <div class="pixel on"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel on"></div>
+                <div class="pixel on"></div>
+                <div class="pixel"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel on"></div>
+                <div class="pixel"></div>
+                <div class="pixel on"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel on"></div>
+                <div class="pixel"></div>
+                <div class="pixel"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel"></div>
+                <div class="pixel on"></div>
+                <div class="pixel on"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel"></div>
+                <div class="pixel on"></div>
+                <div class="pixel"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel"></div>
+                <div class="pixel"></div>
+                <div class="pixel on"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+        <div class="t-switch">
+            <div class="pattern">
+                <div class="pixel"></div>
+                <div class="pixel"></div>
+                <div class="pixel"></div>
+            </div>
+            <div class="next">
+                <div class="spacer left"></div>
+                <div class="pixel pixel-switch off"></div>
+                <div class="spacer right"></div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/animator.js"></script>
+    <script src="./js/canvasctrl.js"></script>
+    <script src="./js/screen.js"></script>
+    <script src="./js/automata.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+
+</html>
