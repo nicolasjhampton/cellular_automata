@@ -18,11 +18,21 @@ function Scroller({ displayCtrl }) {
         } else {
             state.isFilled = true;
         }
+        return array;
+    }
+
+    function generateSeedRow() {
+        return new Array(state.columns).fill(0).map(() => Math.floor(Math.random() * 2));
     }
 
     return Object.freeze({
-        state,
-        drawRow
-    })
+        screen: {
+            state,
+            drawRow,
+            generateSeedRow
+        },
+        firstRow: generateSeedRow()
+    });
+
 
 }

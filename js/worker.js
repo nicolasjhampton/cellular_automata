@@ -6,7 +6,7 @@ onmessage = (e) => {
     if (eventName === "init") {
         const [firstYear, rule] = data;
         automata = AutomataFactory(firstYear);
-        automata.setRule(rule);
+        initRule = automata.setRule(rule);
     }
     if (eventName === "getNewYear") {
         const newYear = automata.createNewYear();
@@ -15,6 +15,10 @@ onmessage = (e) => {
     if (eventName == "ruleUpdate") {
         const [ruleIndex, ruleState] = data;
         automata.updateRule(ruleIndex, ruleState);
+    }
+    if (eventName == "reseed") {
+        const [seedYear] = data;
+        automata.seedPrevYear(seedYear);
     }
 };
 
