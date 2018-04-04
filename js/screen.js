@@ -7,17 +7,10 @@ function Scroller({ displayCtrl }) {
     }
 
     function drawRow(array) {
-        if (state.isFilled) {
-            displayCtrl.shiftRows();
-        }
+        displayCtrl.shiftRows();
 
-        displayCtrl.drawRow(state.currentRow, array);
+        displayCtrl.drawRow(array);
 
-        if (state.currentRow < displayCtrl.grid.rows - 1) {
-            ++state.currentRow;
-        } else {
-            state.isFilled = true;
-        }
         return array;
     }
 

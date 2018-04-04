@@ -1,15 +1,20 @@
-function DOMHandlerFactory({ animateToggleSelector, seedYearSelector, ctrlBoxSelector, buttonClass, onClass }) {
+function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateToggleSelector, seedYearSelector, ctrlBoxSelector, buttonClass, onClass }) {
 
+    const numberSubmit = document.querySelector(numberSubmitSelector);
     const playPause = document.querySelector(animateToggleSelector);
     const seedYear = document.querySelector(seedYearSelector);
     const ctrlBox = document.querySelector(ctrlBoxSelector);
     const buttons = document.getElementsByClassName(buttonClass);
 
-    function initRuleBtns(rule, callback) {
+    function setRuleButtons(rule) {
         rule.forEach((state, index) => {
             const button = buttons[index];
             state ? button.classList.add(onClass) : button.classList.remove(onClass);
         });
+    }
+
+    function initRuleBtns(rule, callback) {
+        setRuleButtons(rule);
         ctrlBox.addEventListener('click', (e) => {
             if (e.target.classList.contains(buttonClass)) {
                 const ruleState = e.target.classList.toggle(onClass) ? 1 : 0;
@@ -17,6 +22,20 @@ function DOMHandlerFactory({ animateToggleSelector, seedYearSelector, ctrlBoxSel
                     .indexOf(e.target.parentNode.parentNode);
                 return callback(ruleIndex, ruleState);
             }
+        });
+    }
+
+    function ruleByNumberInput(callback) {
+        numberSubmit.addEventListener('click', (e) => {
+            const numberInput = document.querySelector(numberInputSelector).value;
+            const newRule = parseInt(numberInput, 10).toString(2)
+                .split("")
+                .map((v) => parseInt(v));
+            while (newRule.length < 8) {
+                newRule.unshift(0);
+            }
+            setRuleButtons(newRule)
+            return callback(newRule);
         });
     }
 
@@ -29,6 +48,8 @@ function DOMHandlerFactory({ animateToggleSelector, seedYearSelector, ctrlBoxSel
     }
 
     return Object.freeze({
+        setRuleButtons,
+        ruleByNumberInput,
         initRuleBtns,
         playPauseToggle,
         seedYearBtn

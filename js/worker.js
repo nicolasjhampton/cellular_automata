@@ -12,17 +12,16 @@ onmessage = (e) => {
         const newYear = automata.createNewYear();
         postMessage(["newYear", newYear]);
     }
-    if (eventName == "ruleUpdate") {
+    if (eventName === "ruleUpdate") {
         const [ruleIndex, ruleState] = data;
         automata.updateRule(ruleIndex, ruleState);
     }
-    if (eventName == "reseed") {
+    if (eventName === "replaceRule") {
+        const [newRule] = data;
+        automata.setRule(newRule);
+    }
+    if (eventName === "reseed") {
         const [seedYear] = data;
         automata.seedPrevYear(seedYear);
     }
 };
-
-
-
-
-// automata.drawNewYear();

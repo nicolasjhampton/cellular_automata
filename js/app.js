@@ -4,12 +4,14 @@ const rule110 = [0, 1, 1, 0, 1, 1, 1, 0];
 const canvasDetails = { id: 'automata', target: document.getElementById('screen') };
 
 
-const canvasCtrl = new CanvasControllerFactory(canvasDetails, 1200, 600, 400);
+const canvasCtrl = new CanvasControllerFactory(canvasDetails, 1200, 600, 1200);
 const { screen, firstRow: firstYear } = new Scroller({ displayCtrl: canvasCtrl });
 worker.postMessage(['init', screen.drawRow(firstYear), rule110]);
 
 
 const domHandlers = DOMHandlerFactory({
+    numberInputSelector: "#numberInput",
+    numberSubmitSelector: "#numberSubmit",
     animateToggleSelector: '#animate',
     seedYearSelector: '#seedYear',
     ctrlBoxSelector: '#automata_controls',
@@ -22,6 +24,10 @@ domHandlers.initRuleBtns(rule110, (index, state) => {
 domHandlers.seedYearBtn((e) => {
     worker.postMessage(['reseed', screen.generateSeedRow()]);
 });
+domHandlers.ruleByNumberInput((newRule) => {
+    console.log(newRule)
+    worker.postMessage(['replaceRule', newRule]);
+});
 
 const ani = Animator(function () {
     worker.postMessage(['getNewYear']);
@@ -33,6 +39,6 @@ const ani = Animator(function () {
             screen.drawRow(newYear);
         }
     }
-}, 30);
+}, 0);
 
 domHandlers.playPauseToggle(ani.toggleAnimation);
