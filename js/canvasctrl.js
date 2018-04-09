@@ -1,5 +1,4 @@
 function CanvasControllerFactory({ id, target } = { id: 'automata', target: document.body }, width = 300, height = 300, columns = 50) {
-    const { context, canvas } = setupCanvas(id, target, width, height);
 
     const grid = {
         width,
@@ -9,7 +8,20 @@ function CanvasControllerFactory({ id, target } = { id: 'automata', target: docu
         pixel: {
             width: width / columns,
             color: 'black'
-        }
+        },
+        context: setupCanvas(id, target, width, height)
+    }
+
+    function drawScroll(array) {
+        shiftRows();
+        drawRow(array);
+        return array;
+    }
+
+    function generateSeedRow() {
+        const firstRow = new Array(grid.columns).fill(0).map(() => Math.floor(Math.random() * 2));
+        drawScroll(firstRow);
+        return firstRow;
     }
 
     // private
@@ -19,15 +31,12 @@ function CanvasControllerFactory({ id, target } = { id: 'automata', target: docu
         canvas.setAttribute('height', height);
         canvas.id = id;
         target.appendChild(canvas);
-        return {
-            context: canvas.getContext('2d'),
-            canvas
-        }
+        return canvas.getContext('2d', { alpha: false })
     }
 
     // private
     function clearCanvas() {
-        context.clearRect(
+        grid.context.clearRect(
             0,
             0,
             grid.width,
@@ -36,21 +45,23 @@ function CanvasControllerFactory({ id, target } = { id: 'automata', target: docu
     }
 
     // private
-    function copyCanvas() {
-        //context.fillStyle = context.createPattern(canvas, 'no-repeat');
-        return context.getImageData(0, 0, grid.width, grid.height - grid.pixel.width);
+    function copyCanvas({ minusColumns, minusRows } = { minusColumns: 0, minusRows: 0 }) {
+        return grid.context.getImageData(
+            0, 
+            0, 
+            grid.width - grid.pixel.width * minusColumns, 
+            grid.height - grid.pixel.width * minusRows
+        );
     }
 
     // private
     function printCopy(imageData) {
-        // context.translate(0, -grid.pixel.width);
-        // context.fillRect(0, grid.pixel.width, grid.width, grid.height);
-        context.putImageData(imageData, 0, grid.pixel.width)
+        grid.context.putImageData(imageData, 0, grid.pixel.width)
     }
 
     function drawPixel(x, y, pixelWidth = 1) {
-        context.fillStyle = grid.pixel.color;
-        context.fillRect(
+        grid.context.fillStyle = grid.pixel.color;
+        grid.context.fillRect(
             x * grid.pixel.width,
             y * grid.pixel.width,
             pixelWidth * grid.pixel.width,
@@ -75,8 +86,38 @@ function CanvasControllerFactory({ id, target } = { id: 'automata', target: docu
         }
     }
 
+    function clearRow(y) {
+        grid.context.fillStyle = grid.pixel.color;
+        grid.context.clearRect(
+            0,
+            y * grid.pixel.width,
+            grid.pixel.width * grid.columns,
+            grid.pixel.width
+        );
+    }
 
-    // function drawRow(array, y = 0) {
+    function shiftRows() {
+        grid.context.save();
+        const prevFrameMinusLastRow = copyCanvas({ minusColumns: 0, minusRows: 0 });
+        clearCanvas();
+        printCopy(prevFrameMinusLastRow);
+        grid.context.restore();
+    }
+
+    return Object.freeze({
+        shiftRows,
+        clearRow,
+        drawRow,
+        drawPixel,
+        drawScroll,
+        generateSeedRow,
+        grid
+    });
+}
+
+
+
+// function drawRow(array, y = 0) {
 
     //     array.reduce((acc, pixel, index) => {
     //         let { pixelWidth, _array: [
@@ -96,37 +137,6 @@ function CanvasControllerFactory({ id, target } = { id: 'automata', target: docu
     //     }, { pixelWidth: 0, _array: array });
 
     // }
-
-    function clearRow(y) {
-        context.fillStyle = grid.pixel.color;
-        context.clearRect(
-            0,
-            y * grid.pixel.width,
-            grid.pixel.width * grid.columns,
-            grid.pixel.width
-        );
-    }
-
-    function shiftRows() {
-        context.save();
-        const prevFrameMinusLastRow = copyCanvas();
-        clearCanvas();
-        printCopy(prevFrameMinusLastRow);
-        context.restore();
-    }
-
-    return Object.freeze({
-        shiftRows,
-        clearRow,
-        drawRow,
-        drawPixel,
-        grid,
-        canvas,
-        context
-    });
-}
-
-
 
 // function drawRow(array, y = 0) {
 

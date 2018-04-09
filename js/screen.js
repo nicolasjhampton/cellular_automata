@@ -1,9 +1,7 @@
 function Scroller({ displayCtrl }) {
 
     const state = {
-        columns: displayCtrl.grid.columns,
-        currentRow: 0,
-        isFilled: false
+        columns: displayCtrl.grid.columns
     }
 
     function drawRow(array) {
@@ -19,12 +17,9 @@ function Scroller({ displayCtrl }) {
     }
 
     return Object.freeze({
-        screen: {
-            state,
-            drawRow,
-            generateSeedRow
-        },
-        firstRow: generateSeedRow()
+        state,
+        drawRow,
+        generateSeedRow
     });
 
 

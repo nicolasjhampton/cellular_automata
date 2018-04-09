@@ -1,14 +1,6 @@
 function AutomataFactory(firstYear) {
 
-    const rule0 = {
-        "[1,1,1]": 0, "[1,1,0]": 0, "[1,0,1]": 0, "[1,0,0]": 0,
-        "[0,1,1]": 0, "[0,1,0]": 0, "[0,0,1]": 0, "[0,0,0]": 0,
-    };
-
-    const order = [
-        "[1,1,1]", "[1,1,0]", "[1,0,1]", "[1,0,0]",
-        "[0,1,1]", "[0,1,0]", "[0,0,1]", "[0,0,0]",
-    ];
+    const rule0 = [0, 0, 0, 0, 0, 0, 0, 0];
 
     const state = {
         sideValue: 1,
@@ -22,17 +14,15 @@ function AutomataFactory(firstYear) {
     }
 
     function setRule(array) {
-        const newRule = Object.assign({}, rule0);
-        array.forEach((value, index) => newRule[order[index]] = value)
-        state.rule = newRule;
+        state.rule = array.slice(0).reverse();
     }
 
     function getRule() {
-        return order.map(key => state.rule[key])
+        return state.rule.reverse();
     }
 
     function updateRule(ruleIndex, ruleState) {
-        state.rule[order[ruleIndex]] = ruleState;
+        state.rule[Math.abs(ruleIndex - 7)] = ruleState;
     }
 
     function getLastYearsPixels(index) {
@@ -46,16 +36,18 @@ function AutomataFactory(firstYear) {
         } else if (end) {
             mapKey.push(state.prevYear[0]);
         }
-        return JSON.stringify(mapKey);
+        return parseInt(mapKey.join(""), 2);
     }
 
     function getNewYearsPixel(index) {
-        const mapKey = getLastYearsPixels(index);
-        return state.rule[mapKey];
+        return state.rule[getLastYearsPixels(index)];
     }
 
     function createNewYear() {
-        const newYear = state.prevYear.map((pixel, index) => getNewYearsPixel(index));
+        const newYear = [];
+        for(let i = 0; i < state.prevYear.length; ++i) {
+            newYear.push(getNewYearsPixel(i));
+        }
         state.prevYear = newYear;
         return newYear;
     }

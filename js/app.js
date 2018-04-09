@@ -1,14 +1,25 @@
 const worker = new Worker('js/worker.js');
 
-const rule110 = [0, 1, 1, 0, 1, 1, 1, 0];
-const canvasDetails = { id: 'automata', target: document.getElementById('screen') };
+/**
+ * CONSTANTS
+ */
+const RULE110 = [0, 1, 1, 0, 1, 1, 1, 0];
+const WIDTH = 1200;
+const HEIGHT = 600;
+const COLUMNS = 1000;
+const DOM_DETAILS = { id: 'automata', target: document.getElementById('screen') };
 
 
-const canvasCtrl = new CanvasControllerFactory(canvasDetails, 1200, 600, 1200);
-const { screen, firstRow: firstYear } = new Scroller({ displayCtrl: canvasCtrl });
-worker.postMessage(['init', screen.drawRow(firstYear), rule110]);
+/**
+ * initialize ctrls
+ */
+const canvas = new CanvasControllerFactory(DOM_DETAILS, WIDTH, HEIGHT, COLUMNS);
+worker.postMessage(['init', canvas.generateSeedRow(), RULE110]);
 
 
+/**
+ * Activate Event Handlers
+ */
 const domHandlers = DOMHandlerFactory({
     numberInputSelector: "#numberInput",
     numberSubmitSelector: "#numberSubmit",
@@ -18,17 +29,20 @@ const domHandlers = DOMHandlerFactory({
     buttonClass: 'pixel-switch',
     onClass: 'on'
 });
-domHandlers.initRuleBtns(rule110, (index, state) => {
+domHandlers.initRuleBtns(RULE110, (index, state) => {
     worker.postMessage(['ruleUpdate', index, state]);
 });
 domHandlers.seedYearBtn((e) => {
-    worker.postMessage(['reseed', screen.generateSeedRow()]);
+    worker.postMessage(['reseed', canvas.generateSeedRow()]);
 });
 domHandlers.ruleByNumberInput((newRule) => {
-    console.log(newRule)
     worker.postMessage(['replaceRule', newRule]);
 });
 
+
+/**
+ * manage animations
+ */
 const ani = Animator(function () {
     worker.postMessage(['getNewYear']);
     worker.onmessage = (e) => {
@@ -36,7 +50,7 @@ const ani = Animator(function () {
 
         if (eventName === "newYear") {
             const [newYear] = data;
-            screen.drawRow(newYear);
+            canvas.drawScroll(newYear);
         }
     }
 }, 0);
