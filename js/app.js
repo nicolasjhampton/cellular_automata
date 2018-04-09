@@ -29,8 +29,8 @@ const domHandlers = DOMHandlerFactory({
     buttonClass: 'pixel-switch',
     onClass: 'on'
 });
-domHandlers.initRuleBtns(RULE110, (index, state) => {
-    worker.postMessage(['ruleUpdate', index, state]);
+domHandlers.initRuleBtns(RULE110, (newRule) => {
+    worker.postMessage(['replaceRule', newRule]);
 });
 domHandlers.seedYearBtn((e) => {
     worker.postMessage(['reseed', canvas.generateSeedRow()]);

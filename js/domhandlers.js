@@ -15,14 +15,30 @@ function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateT
 
     function initRuleBtns(rule, callback) {
         setRuleButtons(rule);
+        setRuleNumber(rule)
         ctrlBox.addEventListener('click', (e) => {
             if (e.target.classList.contains(buttonClass)) {
-                const ruleState = e.target.classList.toggle(onClass) ? 1 : 0;
-                const ruleIndex = Array.from(e.currentTarget.children)
-                    .indexOf(e.target.parentNode.parentNode);
-                return callback(ruleIndex, ruleState);
+                e.target.classList.toggle(onClass);
+                const ruleChange = Array.from(buttons)
+                                        .map(button => button.classList.contains(onClass) ? 1 : 0);
+                setRuleNumber(ruleChange);
+                return callback(ruleChange);
             }
+            // if (e.target.classList.contains(buttonClass)) {
+            //     const ruleState = e.target.classList.toggle(onClass) ? 1 : 0;
+            //     const ruleIndex = Array.from(e.currentTarget.children)
+            //         .indexOf(e.target.parentNode.parentNode);
+            //     return callback(ruleIndex, ruleState);
+            // }
         });
+    }
+
+    function setRuleNumber(rule) {
+        const ruleNumber = parseInt(rule.join(""), 2);
+        document.querySelector(numberInputSelector).value = ruleNumber;
+        // console.log(ruleNumber);
+        // numberSubmit.value = ruleNumber;
+        // console.log(numberSubmit.value);
     }
 
     function ruleByNumberInput(callback) {
