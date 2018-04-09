@@ -1,14 +1,29 @@
-const worker = new Worker('js/worker.js');
-
+// constants
+const width = 1000;
+const height = 600;
+const columns = 200;
 const rule110 = [0, 1, 1, 0, 1, 1, 1, 0];
-const canvasDetails = { id: 'automata', target: document.getElementById('screen') };
 
+// grab and set onscreen canvas
+const canvas = document.getElementById('canvas');
+canvas.setAttribute('width', width);
+canvas.setAttribute('height', height);
+const canvasContext = canvas.getContext('2d', { alpha: false });
 
-const canvasCtrl = new CanvasControllerFactory(canvasDetails, 1200, 600, 1200);
-const { screen, firstRow: firstYear } = new Scroller({ displayCtrl: canvasCtrl });
-worker.postMessage(['init', screen.drawRow(firstYear), rule110]);
+// initialize screen controllers
+const canvasCtrl = new CanvasControllerFactory(width, height, columns);
+const screen = new Scroller({ displayCtrl: canvasCtrl });
 
+// create and draw random first year
+const firstYear = screen.generateSeedRow();
+const image = screen.drawRow(firstYear);
+canvasContext.putImageData(image, 0, 0);
 
+// initialize automaton model
+const automatonWorker = new Worker('js/automatonworker.js');
+automatonWorker.postMessage(['init', firstYear, rule110, columns]);
+
+// attach event handlers
 const domHandlers = DOMHandlerFactory({
     numberInputSelector: "#numberInput",
     numberSubmitSelector: "#numberSubmit",
@@ -19,26 +34,31 @@ const domHandlers = DOMHandlerFactory({
     onClass: 'on'
 });
 domHandlers.initRuleBtns(rule110, (index, state) => {
-    worker.postMessage(['ruleUpdate', index, state]);
-});
-domHandlers.seedYearBtn((e) => {
-    worker.postMessage(['reseed', screen.generateSeedRow()]);
+    automatonWorker.postMessage(['ruleUpdate', index, state]);
 });
 domHandlers.ruleByNumberInput((newRule) => {
-    console.log(newRule)
-    worker.postMessage(['replaceRule', newRule]);
+    automatonWorker.postMessage(['replaceRule', newRule]);
+});
+domHandlers.seedYearBtn((e) => {
+    automatonWorker.postMessage(['reseed', screen.generateSeedRow()]);
 });
 
+// sync each process time with each frame rendered
 const ani = Animator(function () {
-    worker.postMessage(['getNewYear']);
-    worker.onmessage = (e) => {
+    automatonWorker.postMessage(['getNewYear']);
+    automatonWorker.onmessage = (e) => {
         const [eventName, ...data] = e.data;
 
         if (eventName === "newYear") {
             const [newYear] = data;
-            screen.drawRow(newYear);
+            const image = screen.drawRow(newYear);
+            canvasContext.putImageData(image, 0, 0);
         }
     }
 }, 0);
 
 domHandlers.playPauseToggle(ani.toggleAnimation);
+
+
+
+

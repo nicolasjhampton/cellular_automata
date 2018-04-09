@@ -1,31 +1,34 @@
 function Scroller({ displayCtrl }) {
 
     const state = {
-        columns: displayCtrl.grid.columns,
-        currentRow: 0,
-        isFilled: false
+        columns: displayCtrl.grid.columns
     }
 
     function drawRow(array) {
         displayCtrl.shiftRows();
 
-        displayCtrl.drawRow(array);
-
-        return array;
+        const image = displayCtrl.drawRow(array);
+        
+        return image;
     }
 
     function generateSeedRow() {
-        return new Array(state.columns).fill(0).map(() => Math.floor(Math.random() * 2));
+        const row = [];
+        const noOfPixelsOn = Math.floor(Math.random() * (state.columns + 1));
+        for (let i = 0; i < noOfPixelsOn; ++i) {
+            row.push(Math.floor(Math.random() * state.columns))
+        }
+        const seedRow = Array.from(new Set(row))
+                    .sort()
+                    .map(index => ({ coord: [index] }));
+
+        return seedRow;
     }
 
     return Object.freeze({
-        screen: {
-            state,
-            drawRow,
-            generateSeedRow
-        },
-        firstRow: generateSeedRow()
+        state,
+        drawRow,
+        generateSeedRow
     });
-
 
 }

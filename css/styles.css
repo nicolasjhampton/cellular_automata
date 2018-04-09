@@ -1,7 +1,40 @@
 /* canvas { border: 1px solid black; } */
 
+body {
+    display: grid;
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+    grid-template-rows: 50px 0px 600px 100px;
+}
+
+#header {
+    display: flex;
+    grid-column: 1/9;
+    grid-row: 1;
+    align-content: space-around;
+}
+
+#animation_controls {
+    align-self: center;
+}
+
+#twod {
+    grid-column: 1/9;
+    grid-row: 2;
+}
+
+.title {
+    align-self: center;
+}
+
+#screen {
+    grid-column: 1/9;
+    grid-row: 3;
+}
+
 #automata_controls {
     display: grid;
+    grid-column: 1/9;
+    grid-row: 4;
     width: 100%;
     grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
     grid-template-rows: 100px;

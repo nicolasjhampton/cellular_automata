@@ -7,9 +7,9 @@ function Animator(callback, refreshRate = 20) {
     }
 
     function refreshImage() {
-        state.timeId = window.setTimeout(() => {
+        //state.timeId = window.setTimeout(() => {
             run();
-        }, refreshRate);
+        //}, refreshRate);
     }
 
     function updater(timestamp) {
@@ -37,8 +37,8 @@ function Animator(callback, refreshRate = 20) {
     }
 
 
-    return {
+    return Object.freeze({
         state,
         toggleAnimation
-    }
+    });
 }
