@@ -7,9 +7,9 @@ function Animator(callback, refreshRate = 20) {
     }
 
     function refreshImage() {
-        state.timeId = window.setTimeout(() => {
+        //state.timeId = window.setTimeout(() => {
             run();
-        }, refreshRate);
+        //}, refreshRate);
     }
 
     function updater(timestamp) {
