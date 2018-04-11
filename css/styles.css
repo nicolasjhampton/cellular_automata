@@ -1,6 +1,12 @@
-/* canvas { border: 1px solid black; } */
+body { 
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 #header {
+    width: 1000px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -8,7 +14,8 @@
 
 #automata_controls {
     display: grid;
-    width: 100%;
+    width: 996px
+;   padding-right: 5px;
     grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
     grid-template-rows: 100px;
 }

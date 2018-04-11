@@ -11,7 +11,7 @@ function generateRandomYear() {
  */
 const RULE110 = new Uint8ClampedArray([0, 1, 1, 0, 1, 1, 1, 0]);
 const WIDTH = 1000;
-const HEIGHT = 1000;
+const HEIGHT = 600;
 const COLUMNS = 1000;
 const firstYear = generateRandomYear();
 
