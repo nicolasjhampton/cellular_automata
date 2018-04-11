@@ -24,7 +24,7 @@ function Animator(callback, refreshRate = 20) {
 
     function stop() {
         state.isRunning = false;
-        window.clearTimeout(state.timeId);
+        //window.clearTimeout(state.timeId);
         window.cancelAnimationFrame(state.aniId);
     }
 

@@ -1,20 +1,61 @@
-const worker = new Worker('js/worker.js');
+const canvasWorker = new Worker('js/advcanvasworker.js');
+const automatonWorker = new Worker('js/automatonworker.js');
+
+function generateRandomYear() {
+    return Uint8ClampedArray.from({length: COLUMNS}, () => Math.floor(Math.random() * 2))
+}
+
 
 /**
  * CONSTANTS
  */
-const RULE110 = [0, 1, 1, 0, 1, 1, 1, 0];
-const WIDTH = 1200;
-const HEIGHT = 600;
+const RULE110 = new Uint8ClampedArray([0, 1, 1, 0, 1, 1, 1, 0]);
+const WIDTH = 1000;
+const HEIGHT = 1000;
 const COLUMNS = 1000;
-const DOM_DETAILS = { id: 'automata', target: document.getElementById('screen') };
+const firstYear = generateRandomYear();
 
+
+const canvasOnScreen = document.createElement('canvas');
+canvasOnScreen.setAttribute('width', WIDTH);
+canvasOnScreen.setAttribute('height', HEIGHT);
+document.getElementById('screen').appendChild(canvasOnScreen);
+const context = canvasOnScreen.getContext('2d', { alpha: false });
 
 /**
  * initialize ctrls
  */
-const canvas = new CanvasControllerFactory(DOM_DETAILS, WIDTH, HEIGHT, COLUMNS);
-worker.postMessage(['init', canvas.generateSeedRow(), RULE110]);
+
+canvasWorker.postMessage(['init', WIDTH, HEIGHT, COLUMNS, firstYear]);
+automatonWorker.postMessage(['init', firstYear, RULE110]);
+
+
+/**
+ * manage animations
+ */
+const ani = Animator(function () {
+    automatonWorker.postMessage(['getNewYear']);
+    automatonWorker.onmessage = (e) => {
+        const [eventName, ...data] = e.data;
+
+        if (eventName === "newYear") {
+            const [newYear] = data;
+            canvasWorker.postMessage(['genYearImage', newYear])
+        }
+    }
+    canvasWorker.onmessage = (e) => {
+        const [eventName, ...data] = e.data;
+
+        if (eventName === "firstYear") {
+            const [firstYear] = data;
+            canvasWorker.postMessage(['genYearImage', firstYear]);
+        }
+        if (eventName === "drawYear") {
+            const [image] = data;
+            context.putImageData(image, 0, 0);
+        }
+    }
+}, 0);
 
 
 /**
@@ -30,29 +71,13 @@ const domHandlers = DOMHandlerFactory({
     onClass: 'on'
 });
 domHandlers.initRuleBtns(RULE110, (newRule) => {
-    worker.postMessage(['replaceRule', newRule]);
+    automatonWorker.postMessage(['replaceRule', newRule]);
 });
 domHandlers.seedYearBtn((e) => {
-    worker.postMessage(['reseed', canvas.generateSeedRow()]);
+    automatonWorker.postMessage(['reseed', generateRandomYear()]);
 });
 domHandlers.ruleByNumberInput((newRule) => {
-    worker.postMessage(['replaceRule', newRule]);
+    automatonWorker.postMessage(['replaceRule', newRule]);
 });
-
-
-/**
- * manage animations
- */
-const ani = Animator(function () {
-    worker.postMessage(['getNewYear']);
-    worker.onmessage = (e) => {
-        const [eventName, ...data] = e.data;
-
-        if (eventName === "newYear") {
-            const [newYear] = data;
-            canvas.drawScroll(newYear);
-        }
-    }
-}, 0);
 
 domHandlers.playPauseToggle(ani.toggleAnimation);

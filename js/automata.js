@@ -1,6 +1,6 @@
 function AutomataFactory(firstYear) {
 
-    const rule0 = [0, 0, 0, 0, 0, 0, 0, 0];
+    const rule0 = new Uint8ClampedArray([0, 0, 0, 0, 0, 0, 0, 0]);
 
     const state = {
         sideValue: 1,
@@ -14,11 +14,11 @@ function AutomataFactory(firstYear) {
     }
 
     function setRule(array) {
-        state.rule = array.slice(0).reverse();
+        state.rule = new Uint8Array(array.slice(0).reverse());
     }
 
     function getRule() {
-        return state.rule.reverse();
+        return Array.from(state.rule).reverse();
     }
 
     function updateRule(ruleIndex, ruleState) {
@@ -30,11 +30,11 @@ function AutomataFactory(firstYear) {
         const end = index === state.columns - 1;
         const start = begin ? index : index - 1;
         const stop = end ? state.columns : index + 2;
-        const mapKey = state.prevYear.slice(start, stop);
+        let mapKey = state.prevYear.slice(start, stop);
         if (begin) {
-            mapKey.unshift(state.prevYear[state.prevYear.length - 1]);
+            mapKey = [state.prevYear[state.prevYear.length - 1] , ...mapKey];
         } else if (end) {
-            mapKey.push(state.prevYear[0]);
+            mapKey = [...mapKey, state.prevYear[0]]
         }
         return parseInt(mapKey.join(""), 2);
     }
@@ -44,9 +44,9 @@ function AutomataFactory(firstYear) {
     }
 
     function createNewYear() {
-        const newYear = [];
+        const newYear = new Uint8ClampedArray(new ArrayBuffer(state.prevYear.length));
         for(let i = 0; i < state.prevYear.length; ++i) {
-            newYear.push(getNewYearsPixel(i));
+            newYear[i] = getNewYearsPixel(i);
         }
         state.prevYear = newYear;
         return newYear;
@@ -65,3 +65,50 @@ function AutomataFactory(firstYear) {
         seedPrevYear
     });
 }
+
+
+// [
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0],
+// ]
+
+// 3, 4
+// y, x
+
+// y - 1, x - 1
+// y - 1, x
+// y - 1, x + 1
+// y, x - 1
+// y, x
+// y, x + 1
+// y + 1, x - 1
+// y + 1, x
+// y + 1, x + 1
+
+// [
+//     [0, 0, 0],
+//     [0, 0, 0],
+//     [0, 0, 0]
+// ]
+// ===
+// [
+//     [y - 1][x - 1],[y - 1][    x],[y - 1][x + 1],
+//     [    y][x - 1],[    y][    x],[    y][x + 1],
+//     [y + 1][x - 1],[y + 1][    x],[y + 1][x + 1]
+// ]
+// ===
+// [0,1,0] in 1-dimensional cellular Automata
+// numbers 0 through 8
+// 8 1-dimensional senarios make a rule
+// ===
+// [0, 0, 0, 0, 0, 0, 0, 0] in 2-dimensional cellular Automata
+// numbers 0 through 255
+// 512 2-dimensional senarios make a rule
+// might need a set to hold all the senarios
+// OR just add the senarios to the set that matter

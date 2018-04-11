@@ -1,5 +1,11 @@
 /* canvas { border: 1px solid black; } */
 
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 #automata_controls {
     display: grid;
     width: 100%;

@@ -9,7 +9,8 @@ function CanvasControllerFactory({ id, target } = { id: 'automata', target: docu
             width: width / columns,
             color: 'black'
         },
-        context: setupCanvas(id, target, width, height)
+        context: setupCanvas(id, target, width, height),
+        image: new ImageData(width, height)
     }
 
     function drawScroll(array) {

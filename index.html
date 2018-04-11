@@ -9,14 +9,17 @@
 </head>
 
 <body>
-    <p>Cellular Automata</p>
-    <div id="animation_controls">
-        <button id="animate">Animate</button>
-        <button id="seedYear">Reseed</button>
-        <input id="numberInput" type="number" name="numberInput" />
-        <button id="numberSubmit">Submit rule number</button>
+    <div id="header">
+        <div class="title">
+            <p>Cellular Automata</p>
+        </div>
+        <div id="animation_controls">
+            <button id="animate">Animate</button>
+            <button id="seedYear">Reseed</button>
+            <input id="numberInput" type="number" name="numberInput" />
+            <button id="numberSubmit">Submit rule number</button>
+        </div>
     </div>
-    <div id="screen"></div>
     <div id="automata_controls">
         <div class="t-switch">
             <div class="pattern">
@@ -115,9 +118,10 @@
             </div>
         </div>
     </div>
+    <div id="screen"></div>
+
     <script src="./js/animator.js"></script>
-    <script src="./js/canvasctrl.js"></script>
-    <!-- <script src="./js/screen.js"></script> -->
+    <script src="./js/advcanvasctrl.js"></script>
     <script src="./js/domhandlers.js"></script>
     <script src="./js/automata.js"></script>
     <script src="./js/app.js"></script>
