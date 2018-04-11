@@ -1,3 +1,6 @@
+import { DOMHandlerFactory } from "./domhandlers.js";
+import { Animator } from "./animator.js";
+
 const canvasWorker = new Worker('js/advcanvasworker.js');
 const automatonWorker = new Worker('js/automatonworker.js');
 

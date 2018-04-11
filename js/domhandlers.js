@@ -71,3 +71,7 @@ function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateT
         seedYearBtn
     });
 }
+
+export {
+    DOMHandlerFactory
+}

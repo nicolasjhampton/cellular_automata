@@ -42,3 +42,7 @@ function Animator(callback, refreshRate = 20) {
         toggleAnimation
     }
 }
+
+export {
+    Animator
+}
