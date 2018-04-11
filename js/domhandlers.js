@@ -24,21 +24,12 @@ function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateT
                 setRuleNumber(ruleChange);
                 return callback(ruleChange);
             }
-            // if (e.target.classList.contains(buttonClass)) {
-            //     const ruleState = e.target.classList.toggle(onClass) ? 1 : 0;
-            //     const ruleIndex = Array.from(e.currentTarget.children)
-            //         .indexOf(e.target.parentNode.parentNode);
-            //     return callback(ruleIndex, ruleState);
-            // }
         });
     }
 
     function setRuleNumber(rule) {
         const ruleNumber = parseInt(rule.join(""), 2);
         document.querySelector(numberInputSelector).value = ruleNumber;
-        // console.log(ruleNumber);
-        // numberSubmit.value = ruleNumber;
-        // console.log(numberSubmit.value);
     }
 
     function ruleByNumberInput(callback) {

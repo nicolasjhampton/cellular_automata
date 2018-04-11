@@ -5,8 +5,7 @@ onmessage = (e) => {
     const [eventName, ...data] = e.data;
     if (eventName === "init") {
         const [firstYear, rule] = data;
-        automata = AutomataFactory(firstYear);
-        initRule = automata.setRule(rule);
+        automata = AutomataFactory(firstYear, rule);
     }
     if (eventName === "getNewYear") {
         const newYear = automata.createNewYear();

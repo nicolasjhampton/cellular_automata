@@ -1,4 +1,4 @@
-function Animator(callback, refreshRate = 20) {
+function Animator(callback, refreshRate = 0) {
 
     const state = {
         isRunning: false,
@@ -7,9 +7,13 @@ function Animator(callback, refreshRate = 20) {
     }
 
     function refreshImage() {
-        //state.timeId = window.setTimeout(() => {
+        if(refreshRate !== 0) {
+            state.timeId = window.setTimeout(() => {
+                run();
+            }, refreshRate);
+        } else {
             run();
-        //}, refreshRate);
+        }
     }
 
     function updater(timestamp) {
@@ -24,7 +28,9 @@ function Animator(callback, refreshRate = 20) {
 
     function stop() {
         state.isRunning = false;
-        //window.clearTimeout(state.timeId);
+        if(state.timeId) {
+            window.clearTimeout(state.timeId);
+        }
         window.cancelAnimationFrame(state.aniId);
     }
 
@@ -35,7 +41,6 @@ function Animator(callback, refreshRate = 20) {
             run();
         }
     }
-
 
     return {
         state,

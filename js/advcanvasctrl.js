@@ -1,4 +1,5 @@
 function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50, firstYear) {
+    
     const grid = {
         width,
         height,
@@ -27,7 +28,21 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
         return new ImageData(grid.image, width, height);
     }
 
-    // Public
+    // private
+    function shiftRows() {
+        grid.image.copyWithin(grid.pixel.width * grid.rowBitLength, 0);
+    }
+
+    // private
+    function clearRow(y = 0) {
+        grid.image.fill(
+            0,
+            y * grid.rowBitLength,
+            y * grid.rowBitLength + grid.rowBitLength
+        );
+    }
+
+    // private
     function drawRow(array, y = 0) {
         let pixelWidth = 1;
         let nextPixel;
@@ -45,6 +60,7 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
         }
     }
 
+    // private
     function drawPixel(x, y, pixelWidth = 1) {
         const onePixelThickLine = Uint8ClampedArray.from( 
             {length: pixelWidth * grid.pixel.width * 4}, 
@@ -63,20 +79,8 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
         }
     }
 
-    function clearRow(y = 0) {
-        grid.image.fill(
-            0,
-            y * grid.rowBitLength,
-            y * grid.rowBitLength + grid.rowBitLength
-        );
-    }
-
-    function shiftRows() {
-        grid.image.copyWithin(grid.pixel.width * grid.rowBitLength, 0);
-    }
-
     return Object.freeze({
-        drawRow,
+        drawScreen,
         drawScroll,
         grid,
         firstRow

@@ -1,30 +1,47 @@
-function AutomataFactory(firstYear) {
-
-    const rule0 = new Uint8ClampedArray([0, 0, 0, 0, 0, 0, 0, 0]);
+function AutomataFactory(firstYear, firstRule) {
 
     const state = {
-        sideValue: 1,
         prevYear: firstYear,
         columns: firstYear.length,
-        rule: rule0
+        rule: encodeRule(firstRule)
     }
 
-    function clearRule() {
-        state.rule = rule0;
+    // public
+    function setRule(rule) {
+        state.rule = encodeRule(rule);
     }
 
-    function setRule(array) {
-        state.rule = new Uint8Array(array.slice(0).reverse());
-    }
-
-    function getRule() {
-        return Array.from(state.rule).reverse();
-    }
-
+    // public
     function updateRule(ruleIndex, ruleState) {
         state.rule[Math.abs(ruleIndex - 7)] = ruleState;
     }
 
+    // public
+    function createNewYear() {
+        const newYear = new Uint8ClampedArray(new ArrayBuffer(state.prevYear.length));
+        for(let i = 0; i < state.prevYear.length; ++i) {
+            newYear[i] = getNewYearsPixel(i);
+        }
+        state.prevYear = newYear;
+        return newYear;
+    }
+
+    // public
+    function seedPrevYear(seedYear) {
+        state.prevYear = seedYear;
+    }
+
+    // private
+    function encodeRule(array) {
+        return new Uint8Array(array.slice(0).reverse())
+    }
+
+    // private
+    function getNewYearsPixel(index) {
+        return state.rule[getLastYearsPixels(index)];
+    }
+
+    // private
     function getLastYearsPixels(index) {
         const begin = index === 0;
         const end = index === state.columns - 1;
@@ -39,27 +56,14 @@ function AutomataFactory(firstYear) {
         return parseInt(mapKey.join(""), 2);
     }
 
-    function getNewYearsPixel(index) {
-        return state.rule[getLastYearsPixels(index)];
-    }
-
-    function createNewYear() {
-        const newYear = new Uint8ClampedArray(new ArrayBuffer(state.prevYear.length));
-        for(let i = 0; i < state.prevYear.length; ++i) {
-            newYear[i] = getNewYearsPixel(i);
-        }
-        state.prevYear = newYear;
-        return newYear;
-    }
-
-    function seedPrevYear(seedYear) {
-        state.prevYear = seedYear;
+    // private
+    function getRule() {
+        return Array.from(state.rule).reverse();
     }
 
     return Object.freeze({
         state,
         setRule,
-        getRule,
         updateRule,
         createNewYear,
         seedPrevYear

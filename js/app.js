@@ -1,13 +1,7 @@
 import { DOMHandlerFactory } from "./domhandlers.js";
 import { Animator } from "./animator.js";
-
 const canvasWorker = new Worker('js/advcanvasworker.js');
 const automatonWorker = new Worker('js/automatonworker.js');
-
-function generateRandomYear() {
-    return Uint8ClampedArray.from({length: COLUMNS}, () => Math.floor(Math.random() * 2))
-}
-
 
 /**
  * CONSTANTS
@@ -16,21 +10,32 @@ const RULE110 = new Uint8ClampedArray([0, 1, 1, 0, 1, 1, 1, 0]);
 const WIDTH = 1000;
 const HEIGHT = 600;
 const COLUMNS = 1000;
-const firstYear = generateRandomYear();
+const FIRST_YEAR = generateRandomYear();
 
 
+/**
+ * Helper functions
+ */
+function generateRandomYear() {
+    return Uint8ClampedArray.from({length: COLUMNS}, () => Math.floor(Math.random() * 2))
+}
+
+
+/**
+ * initialize and attach the canvas
+ */
 const canvasOnScreen = document.createElement('canvas');
 canvasOnScreen.setAttribute('width', WIDTH);
 canvasOnScreen.setAttribute('height', HEIGHT);
 document.getElementById('screen').appendChild(canvasOnScreen);
 const context = canvasOnScreen.getContext('2d', { alpha: false });
 
-/**
- * initialize ctrls
- */
 
-canvasWorker.postMessage(['init', WIDTH, HEIGHT, COLUMNS, firstYear]);
-automatonWorker.postMessage(['init', firstYear, RULE110]);
+/**
+ * initialize ctrls working off the main thread
+ */
+canvasWorker.postMessage(['init', WIDTH, HEIGHT, COLUMNS, FIRST_YEAR]);
+automatonWorker.postMessage(['init', FIRST_YEAR, RULE110]);
 
 
 /**
@@ -58,7 +63,7 @@ const ani = Animator(function () {
             context.putImageData(image, 0, 0);
         }
     }
-}, 0);
+});
 
 
 /**
