@@ -23,7 +23,7 @@ function AutomataFactory(firstYear, firstRule) {
             newYear[i] = getNewYearsPixel(i);
         }
         state.prevYear = newYear;
-        return newYear;
+        return newYear.slice();
     }
 
     // public
@@ -33,7 +33,7 @@ function AutomataFactory(firstYear, firstRule) {
 
     // private
     function encodeRule(array) {
-        return new Uint8Array(array.slice(0).reverse())
+        return new Uint8Array(array.slice(0).reverse());
     }
 
     // private

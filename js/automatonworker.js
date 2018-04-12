@@ -1,26 +1,27 @@
 
 importScripts('./automata.js');
+
 let automata;
 onmessage = (e) => {
-    const [eventName, ...data] = e.data;
+    const { eventName } = e.data;
+
     if (eventName === "init") {
-        const [firstYear, rule] = data;
-        automata = AutomataFactory(firstYear, rule);
+        const { FIRST_YEAR_COPY, RULE110 } = e.data;
+
+        automata = AutomataFactory(FIRST_YEAR_COPY, RULE110);
     }
     if (eventName === "getNewYear") {
         const newYear = automata.createNewYear();
-        postMessage(["newYear", newYear]);
-    }
-    if (eventName === "ruleUpdate") {
-        const [ruleIndex, ruleState] = data;
-        automata.updateRule(ruleIndex, ruleState);
+        postMessage({ eventName: 'newYear', newYear }, [newYear.buffer]);
     }
     if (eventName === "replaceRule") {
-        const [newRule] = data;
+        const { newRule } = e.data;
+
         automata.setRule(newRule);
     }
     if (eventName === "reseed") {
-        const [seedYear] = data;
+        const { seedYear } = e.data;
+
         automata.seedPrevYear(seedYear);
     }
 };

@@ -22,7 +22,7 @@ function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateT
                 const ruleChange = Array.from(buttons)
                                         .map(button => button.classList.contains(onClass) ? 1 : 0);
                 setRuleNumber(ruleChange);
-                return callback(ruleChange);
+                return callback(Uint16Array.from(ruleChange).slice());
             }
         });
     }
@@ -42,7 +42,7 @@ function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateT
                 newRule.unshift(0);
             }
             setRuleButtons(newRule)
-            return callback(newRule);
+            return callback(Uint16Array.from(newRule).slice());
         });
     }
 

@@ -12,6 +12,7 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
         },
         image: new Uint8ClampedArray(new ArrayBuffer(width * height * 4))
     }
+
     const firstRow = drawScroll(firstYear);
 
     // wip public
@@ -25,7 +26,7 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
         shiftRows();
         clearRow();
         drawRow(array);
-        return new ImageData(grid.image, width, height);
+        return grid.image.slice();
     }
 
     // private
