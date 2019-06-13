@@ -85,6 +85,7 @@ class RuleControl extends HTMLElement {
     stylesheet() {
         return `
         .rule-control {
+            box-sizing: border-box;
             display: grid;
             width: 100%;
             height: 100%;
