@@ -1,29 +1,27 @@
-function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateToggleSelector, seedYearSelector, ctrlBoxSelector, buttonClass, onClass }) {
+function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateToggleSelector, seedYearSelector, ctrlBoxSelector }) {
 
     const numberSubmit = document.querySelector(numberSubmitSelector);
     const playPause = document.querySelector(animateToggleSelector);
     const seedYear = document.querySelector(seedYearSelector);
     const ctrlBox = document.querySelector(ctrlBoxSelector);
-    const buttons = document.getElementsByClassName(buttonClass);
+    const buttons = document.getElementsByTagName('rule-control');
+    const onClass = "on";
 
     function setRuleButtons(rule) {
         rule.forEach((state, index) => {
             const button = buttons[index];
-            state ? button.classList.add(onClass) : button.classList.remove(onClass);
+            state ? button.setAttribute(onClass, "") : button.removeAttribute(onClass);
         });
     }
 
     function initRuleBtns(rule, callback) {
         setRuleButtons(rule);
-        setRuleNumber(rule)
-        ctrlBox.addEventListener('click', (e) => {
-            if (e.target.classList.contains(buttonClass)) {
-                e.target.classList.toggle(onClass);
-                const ruleChange = Array.from(buttons)
-                                        .map(button => button.classList.contains(onClass) ? 1 : 0);
-                setRuleNumber(ruleChange);
-                return callback(Uint16Array.from(ruleChange).slice());
-            }
+        setRuleNumber(rule);
+        ctrlBox.addEventListener('pixel-switch', (e) => {
+            const ruleChange = Array.from(buttons)
+                                    .map(button => button.hasAttribute(onClass) ? 1 : 0);
+            setRuleNumber(ruleChange);
+            return callback(Uint16Array.from(ruleChange).slice());
         });
     }
 

@@ -23,104 +23,17 @@
         </div>
     </div>
     <div id="automata_controls">
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel on"></div>
-                <div class="pixel on"></div>
-                <div class="pixel on"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel on"></div>
-                <div class="pixel on"></div>
-                <div class="pixel"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel on"></div>
-                <div class="pixel"></div>
-                <div class="pixel on"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel on"></div>
-                <div class="pixel"></div>
-                <div class="pixel"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel"></div>
-                <div class="pixel on"></div>
-                <div class="pixel on"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel"></div>
-                <div class="pixel on"></div>
-                <div class="pixel"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel"></div>
-                <div class="pixel"></div>
-                <div class="pixel on"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
-        <div class="t-switch">
-            <div class="pattern">
-                <div class="pixel"></div>
-                <div class="pixel"></div>
-                <div class="pixel"></div>
-            </div>
-            <div class="next">
-                <div class="spacer left"></div>
-                <div class="pixel pixel-switch off"></div>
-                <div class="spacer right"></div>
-            </div>
-        </div>
+        <rule-control data-pattern="1,1,1"></rule-control>
+        <rule-control data-pattern="1,1,0"></rule-control>
+        <rule-control data-pattern="1,0,1"></rule-control>
+        <rule-control data-pattern="1,0,0"></rule-control>
+        <rule-control data-pattern="0,1,1"></rule-control>
+        <rule-control data-pattern="0,1,0"></rule-control>
+        <rule-control data-pattern="0,0,1"></rule-control>
+        <rule-control data-pattern="0,0,0"></rule-control>
     </div>
     <div id="screen"></div>
+    <script src="./js/rule-control.js"></script>
     <script type="module" src="./js/app.js"></script>
 </body>
 

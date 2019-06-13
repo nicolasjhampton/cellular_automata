@@ -15,12 +15,6 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
 
     const firstRow = drawScroll(firstYear);
 
-    // wip public
-    function drawScreen(array) {
-        drawRow(array);
-        return array;
-    }
-
     // public
     function drawScroll(array) {
         shiftRows();
@@ -64,13 +58,17 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
     // private
     function drawPixel(x, y, pixelWidth = 1) {
         const onePixelThickLine = Uint8ClampedArray.from( 
-            {length: pixelWidth * grid.pixel.width * 4}, 
-            (x, i) => (i + 1) % 4 === 0 ? 255 : 0);
+            {
+                length: pixelWidth * grid.pixel.width * 4
+            }, 
+            (x, i) => (i + 1) % 4 === 0 ? 255 : 0
+        );
 
         const startingPositionOfPixelToBeDrawn = x * grid.pixel.width * 4 + y * grid.pixel.width * grid.rowBitLength;
         const endingPositionOfPixelToBeDrawn = startingPositionOfPixelToBeDrawn + onePixelThickLine.length;
 
         grid.image.set(onePixelThickLine, startingPositionOfPixelToBeDrawn);
+
         for(let i = y + 1; i < (grid.height / grid.rows); ++i) {
             grid.image.copyWithin(
                 startingPositionOfPixelToBeDrawn + grid.rowBitLength * i,
@@ -81,7 +79,6 @@ function AdvancedCanvasControllerFactory(width = 300, height = 300, columns = 50
     }
 
     return Object.freeze({
-        drawScreen,
         drawScroll,
         grid,
         firstRow

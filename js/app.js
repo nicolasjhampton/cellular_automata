@@ -38,7 +38,7 @@ const canvasOnScreen = document.createElement('canvas');
 canvasOnScreen.setAttribute('width', WIDTH);
 canvasOnScreen.setAttribute('height', HEIGHT);
 document.getElementById('screen').appendChild(canvasOnScreen);
-const context = canvasOnScreen.getContext('2d', { alpha: false });
+const context = canvasOnScreen.getContext('2d', { alpha: true });
 
 
 /**
