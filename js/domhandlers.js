@@ -45,7 +45,14 @@ function DOMHandlerFactory({ numberInputSelector, numberSubmitSelector, animateT
     }
 
     function playPauseToggle(callback) {
-        playPause.addEventListener('click', callback);
+        playPause.addEventListener('click', (e) => {
+            if(e.target.textContent === "START") {
+                e.target.textContent = "STOP";
+            } else {
+                e.target.textContent = "START";
+            }
+            callback(e);
+        });
     }
 
     function seedYearBtn(callback) {
